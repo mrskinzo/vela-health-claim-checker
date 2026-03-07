@@ -1089,8 +1089,15 @@ function sendMessage() {
   setTimeout(() => {
     hideTyping();
     const key = detectClaim(text);
+    const t = text.toLowerCase().trim();
     if (key) {
       renderBotCard(claims[key]);
+    } else if (/^(hi|hey|hello|howdy|hiya|good morning|good afternoon|good evening|sup|yo)[\s!?.]*$/.test(t)) {
+      renderGreeting();
+    } else if (/what.{0,10}(your name|you called|are you)|who are you|introduce yourself|tell me about yourself/.test(t)) {
+      renderWhoAmI();
+    } else if (/thank|thanks|thank you|ty|thx/.test(t)) {
+      renderThanks();
     } else if (isClaimIntent(text)) {
       renderClaimHelper();
     } else {
@@ -1122,6 +1129,33 @@ function renderBotCard(c) {
           <span class="bot-card-ai-note">AI-generated · Not a diagnosis</span>
         </div>
       </div>
+    </div>
+  `, 'bot');
+}
+
+function renderGreeting() {
+  addMsg(`
+    <div class="msg-bot-avatar">${BOT_FACE}</div>
+    <div class="msg-bot-content">
+      <div class="bot-text">Hi! I'm the Vela Health Assistant. I can help you check the status of a claim. Go ahead and enter your Claim Reference Code whenever you're ready.</div>
+    </div>
+  `, 'bot');
+}
+
+function renderWhoAmI() {
+  addMsg(`
+    <div class="msg-bot-avatar">${BOT_FACE}</div>
+    <div class="msg-bot-content">
+      <div class="bot-text">I'm the Vela Health AI Assistant — here to help you check claim status quickly, without the hold music. Enter a Claim Reference Code and I'll pull up the details.</div>
+    </div>
+  `, 'bot');
+}
+
+function renderThanks() {
+  addMsg(`
+    <div class="msg-bot-avatar">${BOT_FACE}</div>
+    <div class="msg-bot-content">
+      <div class="bot-text">Of course. Let me know if there's anything else I can help with.</div>
     </div>
   `, 'bot');
 }
