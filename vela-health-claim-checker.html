@@ -540,6 +540,43 @@
     .pill-orange { background: rgba(234,88,12,0.15);  color: #FB923C; border: 1px solid rgba(251,146,60,0.3);  box-shadow: 0 0 10px rgba(251,146,60,0.12); }
     .pill-red    { background: rgba(220,38,38,0.17);  color: #F87171; border: 1px solid rgba(248,113,113,0.33); box-shadow: 0 0 10px rgba(248,113,113,0.15); }
 
+    .bot-card-meta {
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.38);
+      margin: 8px 0 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+    }
+    .bot-card-meta-sep { opacity: 0.3; }
+    .bot-card-financials {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .fin-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+    }
+    .fin-row-owe {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: 7px;
+      margin-top: 2px;
+    }
+    .fin-label { color: rgba(255,255,255,0.45); }
+    .fin-value { color: rgba(255,255,255,0.85); font-variant-numeric: tabular-nums; }
+    .fin-paid  { color: #4ADE80; }
+    .fin-owe   { color: rgba(255,255,255,0.85); }
+    .fin-note  { font-size: 10.5px; color: rgba(255,255,255,0.35); margin-left: 4px; }
+
     .bot-card-summary {
       font-size: 13.5px;
       color: rgba(255,255,255,0.82);
@@ -778,7 +815,7 @@
         <div class="legacy-row">
           <label class="legacy-label" for="l-code">Claim Reference Code <span class="req">*</span></label>
           <span class="legacy-hint">(Format: VH-XXXXXXX or VH-XXXXXXX-XXX)</span>
-          <input class="legacy-input" type="text" id="l-code" placeholder="e.g. VH-LIMITED-001" autocomplete="off" />
+          <input class="legacy-input" type="text" id="l-code" placeholder="e.g. VH-PAID-001" autocomplete="off" />
         </div>
         <div class="legacy-row">
           <label class="legacy-label" for="l-dob">Member Date of Birth <span class="req">*</span></label>
@@ -807,11 +844,11 @@
         <div class="legacy-codes-box">
           <div class="legacy-codes-title">Available Test Claim Codes (Demo Environment Only)</div>
           <div class="legacy-codes-list">
-            <button class="legacy-code-pill" onclick="legacyFill('VH-NO-EVIDENCE')">VH-NO-EVIDENCE</button>
-            <button class="legacy-code-pill" onclick="legacyFill('VH-LIMITED-001')">VH-LIMITED-001</button>
-            <button class="legacy-code-pill" onclick="legacyFill('VH-LIMITED-002')">VH-LIMITED-002</button>
-            <button class="legacy-code-pill" onclick="legacyFill('VH-LIMITED-003')">VH-LIMITED-003</button>
-            <button class="legacy-code-pill" onclick="legacyFill('VH-HARMFUL-001')">VH-HARMFUL-001</button>
+            <button class="legacy-code-pill" onclick="legacyFill('VH-PAID-001')">VH-PAID-001</button>
+            <button class="legacy-code-pill" onclick="legacyFill('VH-DENIED-001')">VH-DENIED-001</button>
+            <button class="legacy-code-pill" onclick="legacyFill('VH-PENDING-001')">VH-PENDING-001</button>
+            <button class="legacy-code-pill" onclick="legacyFill('VH-PARTIAL-001')">VH-PARTIAL-001</button>
+            <button class="legacy-code-pill" onclick="legacyFill('VH-PAID-002')">VH-PAID-002</button>
           </div>
         </div>
 
@@ -888,60 +925,60 @@
 <script>
 // ── CLAIM DATA ───────────────────────────────────────────────────────
 const claims = {
-  'VH-NO-EVIDENCE': {
-    code: 'VH-NO-EVIDENCE', topic: 'Celery Juice Liver Detox',
-    pillClass: 'pill-orange', pillDot: '○', pillLabel: 'No Clinical Evidence',
-    evidenceCat: '04 - NO_CLINICAL_EVIDENCE',
-    riskCode:    '0002 - LOW_MODERATE',
-    decisionCode:'CLAIM_DENIED_NOEVID',
-    refNum:      'REF-0064821-X',
-    summary: "There's no peer-reviewed evidence that celery juice detoxifies the liver. Your liver filters continuously on its own — no beverage can replace that. This claim comes from social media wellness figures, not clinical research.",
-    rec: "Celery juice is fine as part of a balanced diet, but it offers no special detox benefit. If you have concerns about liver health, speak with your doctor rather than relying on dietary shortcuts.",
-    source: 'No supporting RCTs · Social media origin · Reviewed March 2026'
+  'VH-PAID-001': {
+    code: 'VH-PAID-001',
+    pillClass: 'pill-green', pillDot: '●', pillLabel: 'Paid',
+    provider: 'Dr. Maya Torres, MD', specialty: 'Primary Care',
+    service: 'Office Visit (99213)', date: 'February 14, 2026',
+    billed: '$280.00', planPaid: '$230.00', memberOwes: '$50.00',
+    memberOwesNote: 'copay',
+    refNum: 'REF-0064821-A',
+    summary: 'Your claim has been processed and paid. The plan covered $230.00 after your $50.00 copay was applied. No further action is needed.',
+    nextSteps: 'You may receive an Explanation of Benefits (EOB) in the mail or through your online portal within 7–10 business days.'
   },
-  'VH-LIMITED-001': {
-    code: 'VH-LIMITED-001', topic: 'Vitamin C Megadose for Colds',
-    pillClass: 'pill-amber', pillDot: '◐', pillLabel: 'Limited Evidence',
-    evidenceCat: '02 - LIMITED_EVID_COCHRANE_B',
-    riskCode:    '0003 - MODERATE_HIGH_DOSE',
-    decisionCode:'CLAIM_PARTIAL_CONTEXT_REQ',
-    refNum:      'REF-0071204-C',
-    summary: "High-dose Vitamin C won't prevent or cure a cold for most people. A large Cochrane review of 29 trials found only a modest reduction in cold duration (~8%) — and only in people under heavy physical stress, like marathon runners.",
-    rec: "A standard daily intake (75–90 mg) supports immune function just fine. Megadosing above 2g/day provides no extra benefit and raises your risk of kidney stones and GI issues. Talk to your doctor if you get frequent infections.",
-    source: 'Cochrane Review (29 RCTs) · Hemilä & Chalker · Reviewed March 2026'
+  'VH-DENIED-001': {
+    code: 'VH-DENIED-001',
+    pillClass: 'pill-red', pillDot: '●', pillLabel: 'Denied',
+    provider: 'Riverside Orthopedics', specialty: 'Orthopedics (Out-of-Network)',
+    service: 'Orthopedic Consultation (99243)', date: 'January 28, 2026',
+    billed: '$450.00', planPaid: '$0.00', memberOwes: '$450.00',
+    memberOwesNote: 'out-of-network',
+    refNum: 'REF-0071204-B',
+    summary: 'This claim was denied because Riverside Orthopedics is not in your plan's network. Out-of-network services are not covered under your current plan unless it's a medical emergency.',
+    nextSteps: 'You have 60 days to file an appeal. To appeal, call Member Services at 1-800-835-2652 or submit Form HCS-447B with your referring physician's authorization. You may also request an in-network referral to avoid this in the future.'
   },
-  'VH-LIMITED-002': {
-    code: 'VH-LIMITED-002', topic: 'Sugar Directly Causes Diabetes',
-    pillClass: 'pill-amber', pillDot: '◐', pillLabel: 'Partially Supported — Nuance Required',
-    evidenceCat: '02 - MODERATE_INDIRECT_ADA',
-    riskCode:    '0001 - LOW_OVERSIMPLIFICATION',
-    decisionCode:'CLAIM_PARTIAL_NUANCE_REQ',
-    refNum:      'REF-0083317-D',
-    summary: "Sugar doesn't directly cause diabetes — but the relationship is real. Excess sugar contributes to calorie surplus, which can lead to weight gain and insulin resistance over time. Type 1 diabetes is autoimmune and completely unrelated to diet.",
-    rec: "A diet low in added sugars meaningfully reduces Type 2 diabetes risk, especially with a family history. But 'sugar causes diabetes' is an oversimplification. Talk to your care team about your personal risk profile.",
-    source: 'ADA Clinical Guidelines · NEJM longitudinal studies · Reviewed March 2026'
+  'VH-PENDING-001': {
+    code: 'VH-PENDING-001',
+    pillClass: 'pill-amber', pillDot: '◐', pillLabel: 'In Review',
+    provider: 'Quest Diagnostics', specialty: 'Laboratory Services',
+    service: 'Comprehensive Metabolic Panel (80053)', date: 'March 1, 2026',
+    billed: '$195.00', planPaid: 'Pending', memberOwes: 'TBD',
+    memberOwesNote: 'estimated 5–7 business days',
+    refNum: 'REF-0083317-C',
+    summary: 'Your claim is currently being reviewed. Lab claims typically process within 5–7 business days of the service date. No action is needed from you right now.',
+    nextSteps: 'Check back after March 10, 2026. If the claim hasn't updated by then, contact Member Services at 1-800-835-2652 with your Claim Reference Code.'
   },
-  'VH-LIMITED-003': {
-    code: 'VH-LIMITED-003', topic: 'Turmeric vs. Ibuprofen for Inflammation',
-    pillClass: 'pill-amber', pillDot: '◐', pillLabel: 'Overstated — Limited Evidence',
-    evidenceCat: '02 - LIMITED_BIOAVAIL_POOR',
-    riskCode:    '0003 - MODERATE_INTERACTIONS',
-    decisionCode:'CLAIM_OVERSTATED_EVIDENCE',
-    refNum:      'REF-0091528-T',
-    summary: "Turmeric shows anti-inflammatory effects in lab studies, but the human clinical effects are far weaker than ibuprofen. Standard supplements also have poor bioavailability — most of the curcumin you take doesn't reach your bloodstream.",
-    rec: "Turmeric as a cooking spice is safe and may offer mild long-term benefits. But don't substitute it for prescribed anti-inflammatories — especially for arthritis or post-surgical recovery. It also interacts with blood thinners.",
-    source: '2021 meta-analysis · Curcumin bioavailability research · Reviewed March 2026'
+  'VH-PARTIAL-001': {
+    code: 'VH-PARTIAL-001',
+    pillClass: 'pill-orange', pillDot: '◑', pillLabel: 'Partially Paid',
+    provider: 'Metro General Hospital — Emergency Dept.', specialty: 'Emergency Medicine',
+    service: 'Emergency Department Visit (99284)', date: 'January 5, 2026',
+    billed: '$1,850.00', planPaid: '$1,350.00', memberOwes: '$500.00',
+    memberOwesNote: 'applied to annual deductible',
+    refNum: 'REF-0091528-D',
+    summary: 'Your emergency visit was covered, but $500.00 was applied to your annual deductible, which had not yet been met at the time of service. Once your deductible is met, future claims will be processed at the standard plan rate.',
+    nextSteps: 'Your remaining deductible balance for 2026 has been updated. You can view your deductible progress in your member portal or call Member Services at 1-800-835-2652.'
   },
-  'VH-HARMFUL-001': {
-    code: 'VH-HARMFUL-001', topic: 'Hydrogen Peroxide for Ear Infections',
-    pillClass: 'pill-red', pillDot: '●', pillLabel: 'Potentially Harmful — Do Not Use',
-    evidenceCat: '05 - HARMFUL_NO_CLINICAL_BENEFIT',
-    riskCode:    '0005 - HIGH_EARDRUM_DAMAGE',
-    decisionCode:'CLAIM_DENIED_HARMFUL_RISK',
-    refNum:      'REF-0055642-H',
-    summary: "Putting hydrogen peroxide in an infected ear is dangerous and should not be done. Bacterial ear infections require antibiotic treatment. If the eardrum is perforated — which can happen with infection — hydrogen peroxide can cause permanent inner ear damage.",
-    rec: "Please see a healthcare provider promptly if you suspect an ear infection. This is especially important for children. Do not put any liquid in a painful or draining ear without direct medical guidance.",
-    source: 'AAO-HNS Clinical Guidelines · Pediatric ENT consensus · Reviewed March 2026'
+  'VH-PAID-002': {
+    code: 'VH-PAID-002',
+    pillClass: 'pill-green', pillDot: '●', pillLabel: 'Paid',
+    provider: 'Dr. James Park, MD', specialty: 'Cardiology (In-Network)',
+    service: 'Specialist Consultation (99244)', date: 'February 22, 2026',
+    billed: '$520.00', planPaid: '$470.00', memberOwes: '$50.00',
+    memberOwesNote: 'specialist copay',
+    refNum: 'REF-0055642-E',
+    summary: 'Your specialist visit has been processed and paid. The plan covered $470.00 after your $50.00 specialist copay. No further action is needed.',
+    nextSteps: 'Your EOB will reflect this payment within 7–10 business days. If you believe the copay amount is incorrect, contact Member Services at 1-800-835-2652.'
   }
 };
 
@@ -979,11 +1016,13 @@ function showLegacyResult(claim) {
   const today = new Date().toLocaleDateString('en-US');
   document.getElementById('legacyTable').innerHTML = `
     <tr><td>Claim Reference Code</td><td>${claim.code}</td></tr>
-    <tr><td>Claim Topic</td><td>${claim.topic}</td></tr>
-    <tr><td>Evidence Category Code</td><td>${claim.evidenceCat}</td></tr>
-    <tr><td>Risk Classification</td><td>${claim.riskCode}</td></tr>
-    <tr><td>Assessment Decision</td><td>${claim.decisionCode}</td></tr>
-    <tr><td>Supporting Authority</td><td>N/A — SEE DECISION CODE</td></tr>
+    <tr><td>Provider</td><td>${claim.provider}</td></tr>
+    <tr><td>Service</td><td>${claim.service}</td></tr>
+    <tr><td>Date of Service</td><td>${claim.date}</td></tr>
+    <tr><td>Amount Billed</td><td>${claim.billed}</td></tr>
+    <tr><td>Plan Paid</td><td>${claim.planPaid}</td></tr>
+    <tr><td>Member Responsibility</td><td>${claim.memberOwes} (${claim.memberOwesNote})</td></tr>
+    <tr><td>Claim Status</td><td>${claim.pillLabel.toUpperCase()}</td></tr>
     <tr><td>Processing Date</td><td>${today}</td></tr>
     <tr><td>Decision Reference</td><td>${claim.refNum}</td></tr>
   `;
@@ -1026,11 +1065,11 @@ let userHasSentMessage = false;
 
 function detectClaim(text) {
   const t = text.toLowerCase();
-  if (t.match(/celery|liver.{0,12}detox|detox.{0,12}liver/)) return 'VH-NO-EVIDENCE';
-  if (t.match(/vitamin.{0,3}c|megadose|cold.{0,20}(cure|treat|prevent)|vitamin.{0,20}cold/)) return 'VH-LIMITED-001';
-  if (t.match(/sugar.{0,15}diabet|diabet.{0,15}sugar|does sugar cause/)) return 'VH-LIMITED-002';
-  if (t.match(/turmeric|curcumin|ibuprofen|inflam/)) return 'VH-LIMITED-003';
-  if (t.match(/hydrogen.{0,6}peroxide|peroxide.{0,12}ear|ear.{0,12}peroxide/)) return 'VH-HARMFUL-001';
+  if (t.match(/primary.{0,8}care|office.{0,8}visit|doctor.{0,8}visit|family.{0,8}doc|torres|99213/)) return 'VH-PAID-001';
+  if (t.match(/denied|out.of.network|oon|orthoped|riverside|99243/)) return 'VH-DENIED-001';
+  if (t.match(/lab|blood.{0,8}(work|test)|metabolic|quest|pending|processing|99214|80053/)) return 'VH-PENDING-001';
+  if (t.match(/emergency|urgent.{0,8}care|er |e\.r\.|hospital|deductible|partial|99284/)) return 'VH-PARTIAL-001';
+  if (t.match(/specialist|cardiolog|cardio|heart|park|referral|99244/)) return 'VH-PAID-002';
   const upper = text.trim().toUpperCase();
   if (claims[upper]) return upper;
   return null;
@@ -1118,15 +1157,36 @@ function renderBotCard(c) {
             <span class="pill-dot">${c.pillDot}</span>
             ${c.pillLabel}
           </div>
+          <div class="bot-card-meta">
+            <span>${c.provider}</span>
+            <span class="bot-card-meta-sep">·</span>
+            <span>${c.service}</span>
+            <span class="bot-card-meta-sep">·</span>
+            <span>${c.date}</span>
+          </div>
+          <div class="bot-card-financials">
+            <div class="fin-row">
+              <span class="fin-label">Billed</span>
+              <span class="fin-value">${c.billed}</span>
+            </div>
+            <div class="fin-row">
+              <span class="fin-label">Plan paid</span>
+              <span class="fin-value fin-paid">${c.planPaid}</span>
+            </div>
+            <div class="fin-row fin-row-owe">
+              <span class="fin-label">Your share</span>
+              <span class="fin-value fin-owe">${c.memberOwes} <span class="fin-note">${c.memberOwesNote}</span></span>
+            </div>
+          </div>
           <p class="bot-card-summary">${c.summary}</p>
           <div class="bot-card-section">
-            <div class="bot-card-section-label">💡 What this means for you</div>
-            <p class="bot-card-section-text">${c.rec}</p>
+            <div class="bot-card-section-label">Next steps</div>
+            <p class="bot-card-section-text">${c.nextSteps}</p>
           </div>
         </div>
         <div class="bot-card-footer">
-          <span class="bot-card-source">🔬 ${c.source}</span>
-          <span class="bot-card-ai-note">AI-generated · Not a diagnosis</span>
+          <span class="bot-card-source">Ref: ${c.refNum}</span>
+          <span class="bot-card-ai-note">For informational use only</span>
         </div>
       </div>
     </div>
