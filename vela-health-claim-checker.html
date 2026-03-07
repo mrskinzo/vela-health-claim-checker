@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vela Health · Claim Verification · UX Comparison</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      flex-direction: column;
+      background: #0A0E1A;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── TOP BANNER ── */
+    .top-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      height: 44px;
+      background: #060A12;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
+    .top-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: -0.2px;
+    }
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #2563EB, #7C3AED);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .top-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .top-demo-pill {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .top-github {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .top-github:hover { color: rgba(255,255,255,0.75); }
+
+    /* ── COMPARISON HEADER ── */
+    .comparison-header {
+      display: flex;
+      flex-shrink: 0;
+      height: 50px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .panel-label {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 0 22px;
+      gap: 8px;
+    }
+    .panel-label.legacy {
+      background: #EDECEA;
+      border-right: 1px solid #C8C6C0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .panel-label.ai {
+      background: linear-gradient(90deg, rgba(99,102,241,0.18) 0%, rgba(30,58,110,0.1) 50%, transparent 100%);
+    }
+    .panel-label.ai .panel-title { color: rgba(165,180,252,0.75); }
+    .panel-label.ai .panel-subtitle { color: rgba(165,180,252,0.38); }
+    .panel-icon { font-size: 15px; opacity: 0.65; }
+    .panel-title {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+    }
+    .panel-label.legacy .panel-title { color: #5A5850; }
+    .panel-label.ai .panel-title { color: rgba(255,255,255,0.4); }
+    .panel-sep { opacity: 0.3; font-size: 11px; }
+    .panel-subtitle { font-size: 11.5px; }
+    .panel-label.legacy .panel-subtitle { color: #888880; }
+    .panel-label.ai .panel-subtitle { color: rgba(255,255,255,0.25); }
+
+    .vs-col {
+      width: 2px;
+      position: relative;
+      background: linear-gradient(to bottom, #C8C6C0 0%, #1E3A6E 100%);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .vs-badge {
+      position: absolute;
+      background: #060A12;
+      border: 1.5px solid rgba(255,255,255,0.14);
+      border-radius: 20px;
+      padding: 2px 7px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      z-index: 10;
+      white-space: nowrap;
+    }
+
+    /* ── SPLIT BODY ── */
+    .split-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ─────────────────────────────────
+       LEFT — LEGACY PANEL  (BCBS-style)
+    ───────────────────────────────── */
+    .left-panel {
+      flex: 1;
+      overflow-y: auto;
+      background: #F5F6F8;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .left-panel::-webkit-scrollbar { width: 8px; }
+    .left-panel::-webkit-scrollbar-track { background: #E8EAED; }
+    .left-panel::-webkit-scrollbar-thumb { background: #B0B5BC; border-radius: 4px; }
+
+    /* BCBS-style blue banner */
+    .legacy-sys-header {
+      background: #003087;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #0057B8;
+    }
+    .legacy-sys-title { font-weight: bold; font-size: 12px; letter-spacing: 0.2px; }
+    .legacy-sys-meta { color: rgba(255,255,255,0.6); font-size: 10px; }
+
+    /* Member session bar */
+    .legacy-session-bar {
+      background: #E8F0FB;
+      border-bottom: 1px solid #C2D3EE;
+      padding: 5px 20px;
+      font-size: 10.5px;
+      color: #3A4A5C;
+      display: flex;
+      justify-content: space-between;
+    }
+    .legacy-session-warn { color: #B04500; font-weight: bold; }
+
+    .legacy-body { padding: 20px 22px 28px; max-width: 540px; }
+
+    .legacy-section-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: #003087;
+      border-bottom: 2px solid #003087;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+    .legacy-meta-note {
+      font-size: 11px;
+      color: #555E6B;
+      margin-bottom: 16px;
+      line-height: 1.55;
+      background: #EEF3FB;
+      border-left: 3px solid #0057B8;
+      padding: 8px 12px;
+    }
+
+    .legacy-row { margin-bottom: 14px; }
+    .legacy-label {
+      display: block;
+      font-size: 11px;
+      font-weight: bold;
+      color: #2C3E50;
+      margin-bottom: 3px;
+    }
+    .legacy-label .req { color: #CC0000; }
+    .legacy-hint {
+      display: block;
+      font-size: 10px;
+      color: #7A8694;
+      margin-bottom: 4px;
+    }
+    .legacy-input {
+      width: 100%;
+      padding: 6px 10px;
+      background: #FFFFFF;
+      border: 1px solid #A8B2BE;
+      border-radius: 2px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #1A2332;
+      outline: none;
+    }
+    .legacy-input:focus {
+      border-color: #0057B8;
+      box-shadow: 0 0 0 2px rgba(0,87,184,0.15);
+    }
+
+    .legacy-btn-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+    .legacy-btn {
+      padding: 7px 16px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11.5px;
+      font-weight: bold;
+      cursor: pointer;
+      border: 1px solid #A8B2BE;
+      background: #FFFFFF;
+      color: #2C3E50;
+      border-radius: 2px;
+      user-select: none;
+    }
+    .legacy-btn:hover { background: #F0F2F5; }
+    .legacy-btn.primary {
+      background: #003087;
+      color: #FFFFFF;
+      border-color: #003087;
+    }
+    .legacy-btn.primary:hover { background: #0044B0; }
+    .legacy-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .legacy-hr { border: none; border-top: 1px solid #D0D6DE; margin: 18px 0; }
+
+    .legacy-codes-box {
+      border: 1px solid #C2D3EE;
+      background: #EEF3FB;
+      padding: 10px 14px;
+      margin-top: 4px;
+      border-radius: 2px;
+    }
+    .legacy-codes-title {
+      font-size: 10.5px;
+      font-weight: bold;
+      color: #003087;
+      margin-bottom: 8px;
+    }
+    .legacy-codes-list { display: flex; flex-wrap: wrap; gap: 5px; }
+    .legacy-code-pill {
+      font-family: Arial, monospace;
+      font-size: 10.5px;
+      background: #FFFFFF;
+      border: 1px solid #A8B2BE;
+      padding: 3px 9px;
+      cursor: pointer;
+      color: #0057B8;
+      text-decoration: underline;
+      border-radius: 2px;
+    }
+    .legacy-code-pill:hover { background: #E8F0FB; }
+
+    /* Legacy result */
+    .legacy-result { display: none; margin-top: 4px; }
+    .legacy-result.show { display: block; }
+
+    .legacy-result-hdr {
+      background: #003087;
+      color: #fff;
+      padding: 9px 14px;
+      font-size: 11.5px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .legacy-result-hdr span:last-child { color: rgba(255,255,255,0.65); font-size: 10.5px; font-weight: normal; }
+
+    .legacy-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      background: #FFFFFF;
+    }
+    .legacy-table tr { border-bottom: 1px solid #D8DDE4; }
+    .legacy-table tr:nth-child(even) { background: #F5F7FA; }
+    .legacy-table td { padding: 7px 12px; color: #1A2332; vertical-align: top; }
+    .legacy-table td:first-child {
+      font-weight: bold;
+      color: #2C3E50;
+      width: 44%;
+      font-size: 11px;
+    }
+
+    .legacy-notice {
+      background: #FFFBEA;
+      border: 1px solid #D4A800;
+      border-left: 4px solid #D4A800;
+      padding: 10px 14px;
+      font-size: 11px;
+      color: #4A3000;
+      line-height: 1.65;
+      margin-top: 8px;
+    }
+    .legacy-notice strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 11px;
+      color: #3A2400;
+    }
+    .legacy-helpdesk {
+      font-size: 10.5px;
+      color: #555E6B;
+      margin-top: 12px;
+      border-top: 1px solid #D0D6DE;
+      padding-top: 10px;
+    }
+
+    /* ── BODY DIVIDER ── */
+    .body-divider {
+      width: 2px;
+      background: linear-gradient(to bottom, #C8C6C0 0%, #1E3A6E 100%);
+      flex-shrink: 0;
+    }
+
+    /* ─────────────────────────────────
+       RIGHT — AI PANEL
+    ───────────────────────────────── */
+    .right-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #060911;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Ambient glow background */
+    .right-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 40% at 50% -10%, rgba(99,102,241,0.13) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 35% at 80% 110%, rgba(124,58,237,0.10) 0%, transparent 55%),
+        #06091180;
+      pointer-events: none;
+      z-index: 0;
+      animation: ambientShift 8s ease-in-out infinite alternate;
+    }
+    @keyframes ambientShift {
+      0%   { opacity: 1; }
+      50%  { opacity: 0.75; }
+      100% { opacity: 1; }
+    }
+    .right-panel > * { position: relative; z-index: 1; }
+
+    .ai-chat-header {
+      padding: 13px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      background: linear-gradient(180deg, rgba(99,102,241,0.1) 0%, transparent 100%);
+      backdrop-filter: blur(12px);
+    }
+    .ai-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+      box-shadow:
+        0 0 0 1px rgba(124,58,237,0.4),
+        0 0 16px rgba(99,102,241,0.45),
+        0 2px 8px rgba(0,0,0,0.5);
+      animation: avatarGlow 3s ease-in-out infinite alternate;
+    }
+    @keyframes avatarGlow {
+      from { box-shadow: 0 0 0 1px rgba(124,58,237,0.35), 0 0 12px rgba(99,102,241,0.35), 0 2px 8px rgba(0,0,0,0.5); }
+      to   { box-shadow: 0 0 0 1px rgba(124,58,237,0.55), 0 0 22px rgba(99,102,241,0.55), 0 2px 8px rgba(0,0,0,0.5); }
+    }
+    .ai-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #fff 0%, rgba(165,180,252,0.9) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.3px;
+    }
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: rgba(165,180,252,0.6);
+      background: rgba(99,102,241,0.12);
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 20px;
+      padding: 2px 8px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .ai-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      margin-top: 3px;
+    }
+    .ai-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #34D399;
+      animation: pulseDot 2.5s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
+      50% { opacity: 0.6; box-shadow: 0 0 0 3px rgba(52,211,153,0); }
+    }
+
+    /* Chat messages */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .msg { animation: msgIn 0.22s ease-out; }
+
+    /* Bot message */
+    .msg-bot { display: flex; gap: 10px; align-items: flex-start; }
+    .msg-bot-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563EB, #7C3AED);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .msg-bot-content { flex: 1; min-width: 0; }
+
+    .bot-text {
+      background: linear-gradient(160deg, #141c2e 0%, #0f1520 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 3px 14px 14px 14px;
+      padding: 13px 16px;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.82);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    /* Bot response card */
+    .bot-card {
+      background: linear-gradient(160deg, #141c2e 0%, #0f1520 100%);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 3px 14px 14px 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+      position: relative;
+    }
+    /* Left accent bar driven by status class on the parent .bot-card */
+    .bot-card.accent-green  { border-left: 3px solid rgba(74,222,128,0.6); }
+    .bot-card.accent-amber  { border-left: 3px solid rgba(252,211,77,0.6); }
+    .bot-card.accent-orange { border-left: 3px solid rgba(251,146,60,0.6); }
+    .bot-card.accent-red    { border-left: 3px solid rgba(248,113,113,0.6); }
+    .bot-card-body { padding: 15px 16px 12px; }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      margin-bottom: 13px;
+    }
+    .pill-dot { font-size: 9px; }
+
+    .pill-green  { background: rgba(22,163,74,0.15);  color: #4ADE80; border: 1px solid rgba(74,222,128,0.3);  box-shadow: 0 0 10px rgba(74,222,128,0.15); }
+    .pill-amber  { background: rgba(217,119,6,0.15);  color: #FCD34D; border: 1px solid rgba(252,211,77,0.3);  box-shadow: 0 0 10px rgba(252,211,77,0.12); }
+    .pill-orange { background: rgba(234,88,12,0.15);  color: #FB923C; border: 1px solid rgba(251,146,60,0.3);  box-shadow: 0 0 10px rgba(251,146,60,0.12); }
+    .pill-red    { background: rgba(220,38,38,0.17);  color: #F87171; border: 1px solid rgba(248,113,113,0.33); box-shadow: 0 0 10px rgba(248,113,113,0.15); }
+
+    .bot-card-summary {
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .bot-card-section {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 9px;
+      padding: 10px 12px;
+      margin-bottom: 0;
+    }
+    .bot-card-section-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.38);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 5px;
+    }
+    .bot-card-section-text {
+      font-size: 13px;
+      color: rgba(255,255,255,0.68);
+      line-height: 1.65;
+    }
+    .bot-card-footer {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .bot-card-source { font-size: 10.5px; color: rgba(255,255,255,0.25); }
+    .bot-card-ai-note { font-size: 10px; color: rgba(255,255,255,0.18); }
+
+    /* User message */
+    .msg-user { display: flex; justify-content: flex-end; }
+    .user-bubble {
+      background: linear-gradient(135deg, #1D4ED8 0%, #4338CA 100%);
+      border-radius: 14px 14px 3px 14px;
+      padding: 10px 15px;
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.97);
+      line-height: 1.6;
+      max-width: 78%;
+      box-shadow: 0 2px 14px rgba(67,56,202,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+
+    /* Typing indicator */
+    .typing-row { display: flex; gap: 10px; align-items: center; }
+    .typing-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563EB, #7C3AED);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .typing-bubble {
+      background: #111827;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 3px 14px 14px 14px;
+      padding: 13px 16px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      animation: dotBounce 1.3s infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.18s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes dotBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
+
+    /* Chat input area */
+    .chat-input-area {
+      flex-shrink: 0;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 11px 16px 14px;
+      background: rgba(6,9,17,0.85);
+      backdrop-filter: blur(10px);
+    }
+    .chat-suggestions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .chip {
+      font-size: 11px;
+      color: rgba(165,180,252,0.55);
+      background: rgba(99,102,241,0.06);
+      border: 1px solid rgba(99,102,241,0.18);
+      border-radius: 20px;
+      padding: 4px 12px;
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: 'Inter', sans-serif;
+    }
+    .chip:hover {
+      background: rgba(99,102,241,0.15);
+      color: rgba(165,180,252,0.95);
+      border-color: rgba(99,102,241,0.4);
+      box-shadow: 0 0 8px rgba(99,102,241,0.2);
+    }
+    .chat-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .chat-input {
+      flex: 1;
+      background: rgba(17,24,39,0.8);
+      border: 1px solid rgba(99,102,241,0.18);
+      border-radius: 12px;
+      padding: 10px 15px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.92);
+      resize: none;
+      outline: none;
+      line-height: 1.5;
+      min-height: 42px;
+      max-height: 100px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .chat-input::placeholder { color: rgba(255,255,255,0.2); }
+    .chat-input:focus {
+      border-color: rgba(99,102,241,0.55);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+    }
+
+    .send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: opacity 0.15s, transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 2px 12px rgba(99,102,241,0.5);
+    }
+    .send-btn:hover {
+      opacity: 0.88;
+      box-shadow: 0 4px 18px rgba(99,102,241,0.65);
+    }
+    .send-btn:active { transform: scale(0.94); }
+    .send-btn:disabled { opacity: 0.28; cursor: not-allowed; box-shadow: none; }
+    .send-btn svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .input-footer {
+      text-align: center;
+      font-size: 10px;
+      color: rgba(255,255,255,0.16);
+      margin-top: 8px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .left-panel, .body-divider { display: none; }
+      .panel-label.legacy, .vs-col { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BANNER -->
+  <div class="top-banner">
+    <div class="top-brand">
+      <div class="brand-mark">L</div>
+      Vela Health
+    </div>
+    <div class="top-meta">
+      <span class="top-demo-pill">Portfolio Demo</span>
+      <a href="https://github.com/mrskinzo/vela-health-claim-checker" target="_blank" class="top-github">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        View on GitHub
+      </a>
+    </div>
+  </div>
+
+  <!-- COMPARISON HEADER -->
+  <div class="comparison-header">
+    <div class="panel-label legacy">
+      <span class="panel-icon">🗂</span>
+      <span class="panel-title">Legacy Portal</span>
+      <span class="panel-sep">·</span>
+      <span class="panel-subtitle">How it works today</span>
+    </div>
+    <div class="vs-col">
+      <span class="vs-badge">vs</span>
+    </div>
+    <div class="panel-label ai">
+      <span class="panel-icon">✦</span>
+      <span class="panel-title">AI Assistant</span>
+      <span class="panel-sep">·</span>
+      <span class="panel-subtitle">How it should work</span>
+    </div>
+  </div>
+
+  <!-- SPLIT BODY -->
+  <div class="split-body">
+
+    <!-- LEFT: LEGACY PANEL -->
+    <div class="left-panel" id="leftPanel">
+      <div class="legacy-sys-header">
+        <span class="legacy-sys-title">Member Claim Status Portal</span>
+        <span class="legacy-sys-meta">v2.3.1 &nbsp;|&nbsp; Best viewed in Internet Explorer 11 &nbsp;|&nbsp; Last Updated: 03/15/2018</span>
+      </div>
+      <div class="legacy-session-bar">
+        <span>Logged in as: MEMBER_GUEST &nbsp;|&nbsp; Session: 4892-XZ &nbsp;|&nbsp; Dept: MEM_SERVICES</span>
+        <span class="legacy-session-warn">&#9888; SESSION EXPIRES IN: 14:32</span>
+      </div>
+
+      <div class="legacy-body">
+        <div class="legacy-section-title">Claim Verification Request Form</div>
+        <p class="legacy-meta-note">Fields marked with an asterisk (*) are required. Incomplete or incorrect submissions will not be processed and must be resubmitted.</p>
+
+        <div class="legacy-row">
+          <label class="legacy-label" for="l-code">Claim Reference Code <span class="req">*</span></label>
+          <span class="legacy-hint">(Format: VH-XXXXXXX or VH-XXXXXXX-XXX)</span>
+          <input class="legacy-input" type="text" id="l-code" placeholder="e.g. VH-LIMITED-001" autocomplete="off" />
+        </div>
+        <div class="legacy-row">
+          <label class="legacy-label" for="l-dob">Member Date of Birth <span class="req">*</span></label>
+          <span class="legacy-hint">(MM/DD/YYYY &mdash; must match Member ID on file)</span>
+          <input class="legacy-input" type="text" id="l-dob" placeholder="MM/DD/YYYY" autocomplete="off" />
+        </div>
+        <div class="legacy-row">
+          <label class="legacy-label" for="l-mid">Member ID Number</label>
+          <span class="legacy-hint">(Optional &mdash; enter for expedited processing)</span>
+          <input class="legacy-input" type="text" id="l-mid" placeholder="LMB-XXXXXXXX" autocomplete="off" />
+        </div>
+        <div class="legacy-row">
+          <label class="legacy-label" for="l-auth">Authorization Reference</label>
+          <span class="legacy-hint">(Leave blank if no prior authorization on file)</span>
+          <input class="legacy-input" type="text" id="l-auth" placeholder="AUTH-XXXXXXX" autocomplete="off" />
+        </div>
+
+        <div class="legacy-btn-row">
+          <button class="legacy-btn primary" id="legacySubmitBtn" onclick="legacySubmit()">VERIFY CLAIM STATUS</button>
+          <button class="legacy-btn" onclick="legacyClear()">CLEAR FORM</button>
+        </div>
+
+        <hr class="legacy-hr" />
+
+        <!-- Demo codes box -->
+        <div class="legacy-codes-box">
+          <div class="legacy-codes-title">Available Test Claim Codes (Demo Environment Only)</div>
+          <div class="legacy-codes-list">
+            <button class="legacy-code-pill" onclick="legacyFill('VH-NO-EVIDENCE')">VH-NO-EVIDENCE</button>
+            <button class="legacy-code-pill" onclick="legacyFill('VH-LIMITED-001')">VH-LIMITED-001</button>
+            <button class="legacy-code-pill" onclick="legacyFill('VH-LIMITED-002')">VH-LIMITED-002</button>
+            <button class="legacy-code-pill" onclick="legacyFill('VH-LIMITED-003')">VH-LIMITED-003</button>
+            <button class="legacy-code-pill" onclick="legacyFill('VH-HARMFUL-001')">VH-HARMFUL-001</button>
+          </div>
+        </div>
+
+        <!-- Result -->
+        <div class="legacy-result" id="legacyResult">
+          <hr class="legacy-hr" />
+          <div class="legacy-result-hdr">
+            <span>CLAIM VERIFICATION RESULT</span>
+            <span>STATUS: PROCESSED</span>
+          </div>
+          <table class="legacy-table" id="legacyTable"></table>
+          <div class="legacy-notice" id="legacyNotice"></div>
+          <div class="legacy-helpdesk">
+            For technical assistance, contact your IT Helpdesk at ext. 4422 &nbsp;|&nbsp; For claim inquiries: 1-800-XXX-XXXX &nbsp;|&nbsp; Mon&ndash;Fri 8AM&ndash;6PM ET
+          </div>
+          <div class="legacy-btn-row" style="margin-top:12px;">
+            <button class="legacy-btn" onclick="legacyClear()">CHECK ANOTHER CLAIM</button>
+          </div>
+        </div>
+
+      </div><!-- /.legacy-body -->
+    </div><!-- /.left-panel -->
+
+    <!-- DIVIDER -->
+    <div class="body-divider"></div>
+
+    <!-- RIGHT: AI PANEL -->
+    <div class="right-panel">
+
+      <!-- AI Header -->
+      <div class="ai-chat-header">
+        <div class="ai-avatar">✦</div>
+        <div style="flex:1;min-width:0;">
+          <div class="ai-name">Vela Health Assistant <span class="ai-badge">✦ AI</span></div>
+          <div class="ai-status">
+            <div class="ai-status-dot"></div>
+            <span>Online &middot; Ready to help with your claim</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="chat-messages" id="chatMessages" aria-live="polite" aria-label="Chat conversation"></div>
+
+      <!-- Input -->
+      <div class="chat-input-area">
+        <div class="chat-input-row">
+          <textarea
+            class="chat-input"
+            id="chatInput"
+            placeholder="Type your question or claim number…"
+            rows="1"
+            onkeydown="handleKey(event)"
+            oninput="autoResize(this)"
+          ></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()" aria-label="Send">
+            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <div class="input-footer">AI-generated &middot; For informational use only &middot; Always review your Explanation of Benefits</div>
+      </div>
+
+    </div><!-- /.right-panel -->
+
+  </div><!-- /.split-body -->
+
+<script>
+// ── CLAIM DATA ───────────────────────────────────────────────────────
+const claims = {
+  'VH-NO-EVIDENCE': {
+    code: 'VH-NO-EVIDENCE', topic: 'Celery Juice Liver Detox',
+    pillClass: 'pill-orange', pillDot: '○', pillLabel: 'No Clinical Evidence',
+    evidenceCat: '04 - NO_CLINICAL_EVIDENCE',
+    riskCode:    '0002 - LOW_MODERATE',
+    decisionCode:'CLAIM_DENIED_NOEVID',
+    refNum:      'REF-0064821-X',
+    summary: "There's no peer-reviewed evidence that celery juice detoxifies the liver. Your liver filters continuously on its own — no beverage can replace that. This claim comes from social media wellness figures, not clinical research.",
+    rec: "Celery juice is fine as part of a balanced diet, but it offers no special detox benefit. If you have concerns about liver health, speak with your doctor rather than relying on dietary shortcuts.",
+    source: 'No supporting RCTs · Social media origin · Reviewed March 2026'
+  },
+  'VH-LIMITED-001': {
+    code: 'VH-LIMITED-001', topic: 'Vitamin C Megadose for Colds',
+    pillClass: 'pill-amber', pillDot: '◐', pillLabel: 'Limited Evidence',
+    evidenceCat: '02 - LIMITED_EVID_COCHRANE_B',
+    riskCode:    '0003 - MODERATE_HIGH_DOSE',
+    decisionCode:'CLAIM_PARTIAL_CONTEXT_REQ',
+    refNum:      'REF-0071204-C',
+    summary: "High-dose Vitamin C won't prevent or cure a cold for most people. A large Cochrane review of 29 trials found only a modest reduction in cold duration (~8%) — and only in people under heavy physical stress, like marathon runners.",
+    rec: "A standard daily intake (75–90 mg) supports immune function just fine. Megadosing above 2g/day provides no extra benefit and raises your risk of kidney stones and GI issues. Talk to your doctor if you get frequent infections.",
+    source: 'Cochrane Review (29 RCTs) · Hemilä & Chalker · Reviewed March 2026'
+  },
+  'VH-LIMITED-002': {
+    code: 'VH-LIMITED-002', topic: 'Sugar Directly Causes Diabetes',
+    pillClass: 'pill-amber', pillDot: '◐', pillLabel: 'Partially Supported — Nuance Required',
+    evidenceCat: '02 - MODERATE_INDIRECT_ADA',
+    riskCode:    '0001 - LOW_OVERSIMPLIFICATION',
+    decisionCode:'CLAIM_PARTIAL_NUANCE_REQ',
+    refNum:      'REF-0083317-D',
+    summary: "Sugar doesn't directly cause diabetes — but the relationship is real. Excess sugar contributes to calorie surplus, which can lead to weight gain and insulin resistance over time. Type 1 diabetes is autoimmune and completely unrelated to diet.",
+    rec: "A diet low in added sugars meaningfully reduces Type 2 diabetes risk, especially with a family history. But 'sugar causes diabetes' is an oversimplification. Talk to your care team about your personal risk profile.",
+    source: 'ADA Clinical Guidelines · NEJM longitudinal studies · Reviewed March 2026'
+  },
+  'VH-LIMITED-003': {
+    code: 'VH-LIMITED-003', topic: 'Turmeric vs. Ibuprofen for Inflammation',
+    pillClass: 'pill-amber', pillDot: '◐', pillLabel: 'Overstated — Limited Evidence',
+    evidenceCat: '02 - LIMITED_BIOAVAIL_POOR',
+    riskCode:    '0003 - MODERATE_INTERACTIONS',
+    decisionCode:'CLAIM_OVERSTATED_EVIDENCE',
+    refNum:      'REF-0091528-T',
+    summary: "Turmeric shows anti-inflammatory effects in lab studies, but the human clinical effects are far weaker than ibuprofen. Standard supplements also have poor bioavailability — most of the curcumin you take doesn't reach your bloodstream.",
+    rec: "Turmeric as a cooking spice is safe and may offer mild long-term benefits. But don't substitute it for prescribed anti-inflammatories — especially for arthritis or post-surgical recovery. It also interacts with blood thinners.",
+    source: '2021 meta-analysis · Curcumin bioavailability research · Reviewed March 2026'
+  },
+  'VH-HARMFUL-001': {
+    code: 'VH-HARMFUL-001', topic: 'Hydrogen Peroxide for Ear Infections',
+    pillClass: 'pill-red', pillDot: '●', pillLabel: 'Potentially Harmful — Do Not Use',
+    evidenceCat: '05 - HARMFUL_NO_CLINICAL_BENEFIT',
+    riskCode:    '0005 - HIGH_EARDRUM_DAMAGE',
+    decisionCode:'CLAIM_DENIED_HARMFUL_RISK',
+    refNum:      'REF-0055642-H',
+    summary: "Putting hydrogen peroxide in an infected ear is dangerous and should not be done. Bacterial ear infections require antibiotic treatment. If the eardrum is perforated — which can happen with infection — hydrogen peroxide can cause permanent inner ear damage.",
+    rec: "Please see a healthcare provider promptly if you suspect an ear infection. This is especially important for children. Do not put any liquid in a painful or draining ear without direct medical guidance.",
+    source: 'AAO-HNS Clinical Guidelines · Pediatric ENT consensus · Reviewed March 2026'
+  }
+};
+
+// ── LEGACY LOGIC ─────────────────────────────────────────────────────
+function legacyFill(code) {
+  document.getElementById('l-code').value = code;
+  document.getElementById('l-dob').value  = '01/01/1990';
+}
+
+function legacyClear() {
+  ['l-code','l-dob','l-mid','l-auth'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('legacyResult').classList.remove('show');
+}
+
+function legacySubmit() {
+  const code = document.getElementById('l-code').value.trim().toUpperCase();
+  const dob  = document.getElementById('l-dob').value.trim();
+  if (!code || !dob) {
+    alert('ERROR: Required fields missing.\n\nPlease complete all required (*) fields and resubmit.\n\nError Code: VAL-001');
+    return;
+  }
+  const btn = document.getElementById('legacySubmitBtn');
+  btn.textContent = 'PROCESSING...';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'VERIFY CLAIM STATUS';
+    btn.disabled = false;
+    const claim = claims[code];
+    claim ? showLegacyResult(claim) : showLegacyNotFound(code);
+    document.getElementById('leftPanel').scrollTo({ top: 99999, behavior: 'smooth' });
+  }, 1300);
+}
+
+function showLegacyResult(claim) {
+  const today = new Date().toLocaleDateString('en-US');
+  document.getElementById('legacyTable').innerHTML = `
+    <tr><td>Claim Reference Code</td><td>${claim.code}</td></tr>
+    <tr><td>Claim Topic</td><td>${claim.topic}</td></tr>
+    <tr><td>Evidence Category Code</td><td>${claim.evidenceCat}</td></tr>
+    <tr><td>Risk Classification</td><td>${claim.riskCode}</td></tr>
+    <tr><td>Assessment Decision</td><td>${claim.decisionCode}</td></tr>
+    <tr><td>Supporting Authority</td><td>N/A — SEE DECISION CODE</td></tr>
+    <tr><td>Processing Date</td><td>${today}</td></tr>
+    <tr><td>Decision Reference</td><td>${claim.refNum}</td></tr>
+  `;
+  document.getElementById('legacyNotice').innerHTML = `
+    <strong>Important Notice — Read Carefully</strong>
+    For appeals or inquiries regarding this determination, submit Form HCS-447B to your regional health services office within 30 (thirty) calendar days of this decision date. Reference your Claim Reference Code and Decision Reference number in all correspondence. Standard processing time: 5–7 business days.
+  `;
+  document.getElementById('legacyResult').classList.add('show');
+}
+
+function showLegacyNotFound(code) {
+  const errRef = Math.floor(Math.random() * 90000 + 10000);
+  document.getElementById('legacyTable').innerHTML = `
+    <tr><td>Claim Reference Code</td><td>${code}</td></tr>
+    <tr><td>System Status</td><td>RECORD_NOT_FOUND</td></tr>
+    <tr><td>Error Code</td><td>ERR-404-NORECORD</td></tr>
+    <tr><td>Error Reference</td><td>ERR-404-${errRef}</td></tr>
+    <tr><td>Processing Date</td><td>${new Date().toLocaleDateString('en-US')}</td></tr>
+  `;
+  document.getElementById('legacyNotice').innerHTML = `
+    <strong>Record Not Found — ERR-404</strong>
+    The claim reference code entered was not found. Verify the code is correct and that your Date of Birth matches the member record. If the problem persists, contact Member Services at 1-800-XXX-XXXX (Mon–Fri 8AM–6PM ET) with error reference ERR-404-${errRef}.
+  `;
+  document.getElementById('legacyResult').classList.add('show');
+}
+
+// ── AI CHAT LOGIC ─────────────────────────────────────────────────────
+let chatBusy = false;
+let userHasSentMessage = false;
+
+function detectClaim(text) {
+  const t = text.toLowerCase();
+  if (t.match(/celery|liver.{0,12}detox|detox.{0,12}liver/)) return 'VH-NO-EVIDENCE';
+  if (t.match(/vitamin.{0,3}c|megadose|cold.{0,20}(cure|treat|prevent)|vitamin.{0,20}cold/)) return 'VH-LIMITED-001';
+  if (t.match(/sugar.{0,15}diabet|diabet.{0,15}sugar|does sugar cause/)) return 'VH-LIMITED-002';
+  if (t.match(/turmeric|curcumin|ibuprofen|inflam/)) return 'VH-LIMITED-003';
+  if (t.match(/hydrogen.{0,6}peroxide|peroxide.{0,12}ear|ear.{0,12}peroxide/)) return 'VH-HARMFUL-001';
+  const upper = text.trim().toUpperCase();
+  if (claims[upper]) return upper;
+  return null;
+}
+
+function addMsg(html, type) {
+  const wrap = document.createElement('div');
+  wrap.className = `msg msg-${type}`;
+  wrap.innerHTML = html;
+  const container = document.getElementById('chatMessages');
+  container.appendChild(wrap);
+  container.scrollTop = container.scrollHeight;
+}
+
+function showTyping() {
+  chatBusy = true;
+  document.getElementById('sendBtn').disabled = true;
+  const container = document.getElementById('chatMessages');
+  const el = document.createElement('div');
+  el.id = 'typingEl';
+  el.className = 'typing-row msg';
+  el.innerHTML = `
+    <div class="typing-avatar">✦</div>
+    <div class="typing-bubble">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>`;
+  container.appendChild(el);
+  container.scrollTop = container.scrollHeight;
+}
+
+function hideTyping() {
+  chatBusy = false;
+  document.getElementById('sendBtn').disabled = false;
+  const el = document.getElementById('typingEl');
+  if (el) el.remove();
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text || chatBusy) return;
+
+  input.value = '';
+  autoResize(input);
+  userHasSentMessage = true;
+
+  addMsg(`<div class="user-bubble">${escHtml(text)}</div>`, 'user');
+  showTyping();
+
+  setTimeout(() => {
+    hideTyping();
+    const key = detectClaim(text);
+    if (key) {
+      renderBotCard(claims[key]);
+    } else {
+      renderBotNotFound();
+    }
+  }, 1400 + Math.random() * 600);
+}
+
+function renderBotCard(c) {
+  const accentMap = { 'pill-green':'accent-green', 'pill-amber':'accent-amber', 'pill-orange':'accent-orange', 'pill-red':'accent-red' };
+  const accentClass = accentMap[c.pillClass] || '';
+  addMsg(`
+    <div class="msg-bot-avatar">✦</div>
+    <div class="msg-bot-content">
+      <div class="bot-card ${accentClass}">
+        <div class="bot-card-body">
+          <div class="status-pill ${c.pillClass}">
+            <span class="pill-dot">${c.pillDot}</span>
+            ${c.pillLabel}
+          </div>
+          <p class="bot-card-summary">${c.summary}</p>
+          <div class="bot-card-section">
+            <div class="bot-card-section-label">💡 What this means for you</div>
+            <p class="bot-card-section-text">${c.rec}</p>
+          </div>
+        </div>
+        <div class="bot-card-footer">
+          <span class="bot-card-source">🔬 ${c.source}</span>
+          <span class="bot-card-ai-note">AI-generated · Not a diagnosis</span>
+        </div>
+      </div>
+    </div>
+  `, 'bot');
+}
+
+function renderBotNotFound() {
+  addMsg(`
+    <div class="msg-bot-avatar">✦</div>
+    <div class="msg-bot-content">
+      <div class="bot-text">
+        I wasn't able to find a match for that in our system. You can try entering your claim number directly, or ask me about a specific service date or provider.
+      </div>
+    </div>
+  `, 'bot');
+}
+
+function useChip(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────
+setTimeout(() => {
+  addMsg(`
+    <div class="msg-bot-avatar">✦</div>
+    <div class="msg-bot-content">
+      <div class="bot-text">
+        Hi, I'm your Vela Health Assistant. How can I help you today?
+      </div>
+    </div>
+  `, 'bot');
+}, 350);
+</script>
+
+</body>
+</html>
