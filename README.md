@@ -6,7 +6,7 @@ A portfolio project by **[Christi Akinwumi](https://christi.io)** · [github.com
 
 ## What it is
 
-A fictional but realistic AI-powered health insurance claim checker, built as a UX/UI and content design portfolio piece. It simulates how a healthcare insurer's member portal might help patients check claim status — with evidence-based ratings, plain-language explanations, and a side-by-side comparison of legacy vs. AI-powered UX.
+A fictional but realistic AI-powered health insurance claim checker, built as a UX/UI and content design portfolio piece. It simulates how a healthcare insurer's member portal might help patients check claim status with evidence-based ratings, plain-language explanations, and a side-by-side comparison of legacy vs. AI-powered UX.
 
 **Vela Health is a fictional company.** No real patient data is collected or used.
 
@@ -15,7 +15,7 @@ A fictional but realistic AI-powered health insurance claim checker, built as a 
 ## Features
 
 - **Evidence-based ratings** — claims scored across four tiers: Covered · Limited · Not Covered · Excluded
-- **Side-by-side UX comparison** — legacy insurance portal (BCBS-style) vs. modern AI chatbot
+- **Side-by-side UX comparison** — legacy insurance portal vs. modern AI chatbot
 - **Plain-language labels** — clear, jargon-free explanations on every result
 - **Inline AI transparency** — disclaimer surfaced directly on results, not hidden in an accordion
 - **Ambient glow AI panel** — polished dark UI with color-coded status cards
@@ -56,4 +56,4 @@ Single-file HTML/CSS/JS — no build step, no backend, no dependencies except Go
 
 ## Built with
 
-Claude AI (Anthropic) · Designed & developed by Christi Akinwumi
+Claude AI Code (Anthropic) · Designed & developed by Christi Akinwumi
