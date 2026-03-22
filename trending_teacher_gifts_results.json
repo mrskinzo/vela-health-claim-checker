@@ -1,0 +1,53 @@
+{
+  "generated": "2026-03-22T11:11:10.991230",
+  "top_3_trending_items": [
+    {
+      "rank": 1,
+      "item": "Personalized Tumblers & Drinkware",
+      "why_trending": "Owala and Stanley-style 40 oz tumblers dominate every 2026 gift guide. Teachers use them daily, and personalization (name, grade, school logo) drives higher conversion rates and repeat purchases.",
+      "price_range": "$15 \u2013 $45",
+      "margin_potential": "High \u2014 bulk-customized tumblers cost $5-$12 wholesale",
+      "platforms": [
+        "Etsy",
+        "Amazon Handmade",
+        "Shopify",
+        "TikTok Shop"
+      ]
+    },
+    {
+      "rank": 2,
+      "item": "Custom Teacher Apparel (Tees, Sweatshirts, Hoodies)",
+      "why_trending": "Print-on-demand teacher tees with subject-specific humor or vintage-inspired designs are top sellers. Hoodies dominate fall/ winter; tees dominate spring (Teacher Appreciation Week in May). 68% of teachers say they prefer practical, wearable gifts.",
+      "price_range": "$18 \u2013 $55",
+      "margin_potential": "High \u2014 POD cost $8-$15; no inventory risk",
+      "platforms": [
+        "Etsy",
+        "Printful/Printify",
+        "TikTok Shop",
+        "Amazon Merch"
+      ]
+    },
+    {
+      "rank": 3,
+      "item": "Gourmet Chocolate & Edible Treat Boxes",
+      "why_trending": "Surveys show teachers rank food and treats in their top 3 preferred gifts. Custom photo Oreos with school logos and handcrafted chocolate teacher lollipops ($4.50-$7 each) are viral on social media. Group-gifting boxes ($25-$69) are rising as parent committees pool funds.",
+      "price_range": "$4.50 \u2013 $69",
+      "margin_potential": "Medium \u2014 perishable; higher AOV with gift sets",
+      "platforms": [
+        "Etsy",
+        "Shopify",
+        "Goldbelly",
+        "direct-to-consumer"
+      ]
+    }
+  ],
+  "key_dates": {
+    "teacher_appreciation_week": "2026-05-04 to 2026-05-08",
+    "teacher_appreciation_day": "2026-05-05"
+  },
+  "live_scrape_scores": {
+    "tumblers_drinkware": 0,
+    "personalized_apparel": 0,
+    "edible_treats": 0
+  }
+}
